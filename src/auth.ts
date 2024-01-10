@@ -32,7 +32,7 @@ export const {
       // Allow OAuth without email verification
       if (account?.provider !== "credentials") return true;
 
-      const existingUser = await getUserById(user.id);
+      const existingUser = await getUserById(user.id); 
 
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) return false;
@@ -51,6 +51,7 @@ export const {
       return true;
     },
     async session({ token, session }) {
+      //merge token with session token to fill user information to get on all page
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }
@@ -72,6 +73,7 @@ export const {
       return session;
     },
     async jwt({ token }) {
+      //fill token with user information
       if (!token.sub) return token;
 
       const existingUser = await getUserById(token.sub);
